@@ -2,7 +2,7 @@ import {  Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/index/Footer";
 import Navbar from "@/components/global/Navbar";
-
+import { Analytics } from '@vercel/analytics/next';
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
@@ -72,6 +72,7 @@ export default function RootLayout({ children }) {
         <Navbar/>
         {children}
         <Footer/>
+                <Analytics />
       </body>
     </html>
   );
