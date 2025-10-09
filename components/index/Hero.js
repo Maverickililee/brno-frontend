@@ -28,7 +28,7 @@ export default function Hero({ data }) {
           <span className="hero-slogan">{hero.slogan}</span>
           <h1 className="hero-title">{hero.title}</h1>
           <p className="hero-description">{hero.description}</p>
-          <Link href="/contact" className="hero-btn">
+          <Link href="#contact" className="hero-btn">
               Contact Us <FaArrowTurnUp />
           </Link>
         </div>
