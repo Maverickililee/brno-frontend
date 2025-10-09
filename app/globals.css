@@ -407,7 +407,7 @@ BLOG - INDEX
   }
 
   .blog-card-title {
-    @apply text-stone-800 text-xl line-clamp-2 h-[70px] font-semibold leading-relaxed  ;
+    @apply text-stone-800 text-xl line-clamp-2  font-semibold leading-relaxed  ;
   }
 
   .blog-description {
