@@ -45,6 +45,9 @@ openGraph:{
 images:"https://brnoweb.com/brnoOg.png",
 
 },
+other:{
+  "google-site-verification":"xP_gvdteQNG0Y06s6j5rtCkWwBSnUKYVOPEvbCQ_iIo",
+},
 twitter:{
   card:"summary_large_image",
   itle:"BrnoWeb - Full-Stack , UI/UX & Web3 Experts",
