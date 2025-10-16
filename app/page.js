@@ -1,58 +1,57 @@
-"use client";
-import Whyus from "@/components/index/Whyus";
+import dynamic from "next/dynamic";
 import Hero from "@/components/index/Hero";
 import Services from "@/components/index/Services";
 import Aboutus from "@/components/index/Aboutus";
-import Faq from "@/components/index/Faq";
-import Contactus from "@/components/index/Contactus";
-import Blogs from "@/components/index/Blogs";
-import { useEffect, useState } from "react";
+import Whyus from "@/components/index/Whyus";
+import { Suspense } from "react";
 import Loading from "@/components/global/Loading";
-// app/page.js
 
+// Lazy load heavy sections with suspense
+const Faq = dynamic(() => import("@/components/index/Faq"), { suspense: true });
+const Blogs = dynamic(() => import("@/components/index/Blogs"), { suspense: true });
+const Contactus = dynamic(() => import("@/components/index/Contactus"), { suspense: true });
 
-export default function Home() {
-    const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-useEffect(() => {
-  Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/services`).then(res => res.json()),
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blogs`).then(res => res.json()),
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/faq`).then(res => res.json()),
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/heros`).then(res => res.json()),
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/whyus`).then(res => res.json()),
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/aboutus`).then(res => res.json()),
-  ])
-.then(([services, blogs, faq, heros, whyus, aboutus]) => {
-        setData({ services, blogs, faq, heros, whyus, aboutus });
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setError('Failed to fetch data');
-        setLoading(false);
-      });
-  }, []);
-  
+export const revalidate = 10;
 
-  if (loading) return <Loading/>;
-  if (error) return <div className="min-h-[65vh] text-lg font-semibold flex items-center justify-center">{error}, Try again later!</div>;
-  
-  return (
- 
-<div >
+export default async function Home() {
+  try {
+    const [services, blogs, faq, heros, whyus, aboutus] = await Promise.all([
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/services`, { cache: "no-store" }).then(res => res.json()),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blogs`, { cache: "no-store" }).then(res => res.json()),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/faq`, { cache: "no-store" }).then(res => res.json()),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/heros`, { cache: "no-store" }).then(res => res.json()),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/whyus`, { cache: "no-store" }).then(res => res.json()),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/aboutus`, { cache: "no-store" }).then(res => res.json()),
+    ]);
 
+    const data = { services, blogs, faq, heros, whyus, aboutus };
 
+    return (
+      <div>
+        {/* Server components render instantly */}
+        <Hero data={data.heros} />
+        <Services data={data.services} />
+        <Aboutus data={data.aboutus} />
+        <Whyus data={data.whyus} />
 
-<Hero data={data.heros}/>
-<Services data={data?.services}/>
-<Aboutus data={data?.aboutus}/>
-<Whyus data={data?.whyus}/>
- <Faq data={data?.faq}/>
-<Contactus/>
-<Blogs data={data?.blogs}/> 
-</div>
-
-  );
+        {/* Client-side lazy-loaded sections with loading */}
+        <Suspense fallback={<Loading />}>
+          <Faq data={data.faq} />
+        </Suspense>
+        <Suspense fallback={<Loading />}>
+          <Contactus />
+        </Suspense>
+        <Suspense fallback={<Loading />}>
+          <Blogs data={data.blogs} />
+        </Suspense>
+      </div>
+    );
+  } catch (err) {
+    console.error(err);
+    return (
+      <div className="min-h-[65vh] text-lg font-semibold flex items-center justify-center">
+        Failed to fetch data. Try again later!
+      </div>
+    );
+  }
 }

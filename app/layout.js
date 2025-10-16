@@ -1,14 +1,15 @@
-import {  Geist_Mono, Poppins } from "next/font/google";
+import { Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Footer from "@/components/index/Footer";
 import Navbar from "@/components/global/Navbar";
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from "@vercel/analytics/next";
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"], // Add the weights you need
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
-
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -16,63 +17,105 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-title:"BrnoWeb - Full-Stack , UI/UX & Web3 Experts",
-description:"Brno Web is a creative agency specializing in crafting beautiful, functional websites that help businesses grow.",
+  title: "Brno Web - Full-Stack , UI/UX & Web3 Experts",
+  description:
+    "Brno Web is a creative agency specializing in crafting beautiful, functional websites that help businesses grow.",
   keywords: [
-    "brno",
-    "brnoweb",
-    "brno web",
-    "Web3 development",
-    "web",
-    "Next.js",
-    "Node.js",
-    "BRNO web agency",
-        "smart contract development",
-    "app development",
-    "SEO optimization",
-    "frontend development",
-    "backend development",
-    "website design",
-    "digital solutions",
-    "web agency",
-        "full-stack development",
-    "UI/UX design",
-  ],   
-url: "https://www.brnoweb.com",
-        siteName: "Brno Web",
-            type: "website",
-openGraph:{
-images:"https://brnoweb.com/brnoOg.png",
+  "Brno Web",
+  "brno web agency",
+  "brno web — web development",
+  "brno web next.js agency",
+  "brno web ui/ux design",
+  "hire brno web developer",
+  "brno web portfolio",
+  "web development agency",
+  "web design agency",
+  "next.js development company",
+  "full-stack web development",
+  "ui ux design agency",
+  "headless cms development",
+  "ecommerce website development",
+  "web agency brno",
+  "web developer brno",
+  "brno web design agency",
+  "hire web developer brno",
+  "web3 development agency",
+  "dapp development services",
+  "nft marketplace development",
+  "smart contract development",
+  "solidity smart contract developer",
+  "defi app development",
+  "blockchain integration services",
+  "hire Next.js developer for production website",
+  "Next.js website development company for startups",
+  "headless CMS with Sanity & Next.js",
+  "custom WordPress theme & Elementor development",
+  "SEO-friendly eCommerce website development",
+  "performance optimization for Next.js sites",
+  "Next.js SEO best practices",
+  "optimize Core Web Vitals on Vercel",
+  "building accessible RTL websites with Next.js",
+  "Web3 SEO content strategies",
+  "headless commerce case study Next.js",
+  "Next.js development",
+  "React.js development",
+  "Node.js backend development",
+  "Sanity headless CMS",
+  "Vercel deployment & performance"
+],
+  metadataBase: new URL("https://www.brnoweb.com"),
+  url: "https://www.brnoweb.com",
+  siteName: "Brno Web",
+  type: "website",
 
-},
-other:{
-  "google-site-verification":"xP_gvdteQNG0Y06s6j5rtCkWwBSnUKYVOPEvbCQ_iIo",
-},
-twitter:{
-  card:"summary_large_image",
-  itle:"BrnoWeb - Full-Stack , UI/UX & Web3 Experts",
-description:"Brno Web is a creative agency specializing in crafting beautiful, functional websites that help businesses grow.",
-images:["https://brnoweb.com/brnoOg.png"],
+  openGraph: {
+    title: "Brno Web - Full-Stack, UI/UX & Web3 Experts",
+    description:
+      "Brno Web is a creative agency specializing in crafting beautiful, functional websites that help businesses grow.",
+    url: "https://www.brnoweb.com",
+    siteName: "Brno Web",
+    type: "website",
+    images: [
+      {
+        url: "https://www.brnoweb.com/brnoOg.png",
+        width: 1200,
+        height: 630,
+        alt: "Brno Web Agency",
+      },
+    ],
+  },
 
-},
-alternates: {
-  canonical: "https://www.brnoweb.com",
-},
-
+  twitter: {
+    card: "summary_large_image",
+    title: "Brno Web - Full-Stack, UI/UX & Web3 Experts",
+    description:
+      "Brno Web is a creative agency specializing in crafting beautiful, functional websites that help businesses grow.",
+    images: ["https://brnoweb.com/brnoOg.png"],
+  },
+  alternates: {
+    canonical: "https://www.brnoweb.com",
+  },
+    other: {
+    "google-site-verification": "xP_gvdteQNG0Y06s6j5rtCkWwBSnUKYVOPEvbCQ_iIo",
+  },
 };
-
-
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${poppins.variable} ${geistMono.variable} antialiased`}
-      >
-        <Navbar/>
+    <html lang="en" dir="ltr">
+      <body className={`${poppins.variable} ${geistMono.variable} antialiased`}>
+        <header>
+        <Navbar />
+
+        </header>
+        <main className="w-full h-full">
         {children}
-        <Footer/>
-                <Analytics />
+        </main>
+        <Footer />
+
+        {/* ✅ Analytics and Performance */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -1,12 +1,14 @@
-// app/robots.txt/route.js
-
-export const dynamic = 'force-static'; // optional: static generation
+export const dynamic = "force-static"; // generate once at build
 
 export async function GET() {
   const robotsContent = `
 User-agent: *
-Disallow: []
 Allow: /
+
+# Optional: Block sensitive or admin paths
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /api
 
 Sitemap: https://www.brnoweb.com/sitemap.xml
 `;

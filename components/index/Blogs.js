@@ -1,10 +1,11 @@
+"use client"
 import EmblaCarousel from '../global/EmblaCarousel'
-import Image from 'next/image'
+import Image from "next/image";
+import { motion } from "framer-motion";
 import Link from 'next/link'
 import { FaArrowRight, FaClock } from 'react-icons/fa6'
 
-export default function Blogs({data}) {
-  
+
 function timeAgo(dateString) {
   const date = new Date(dateString);
   const now = new Date();
@@ -37,35 +38,13 @@ function timeAgo(dateString) {
 }
 
 
-
-      const reversedData = [...data].reverse();
-      
-    
+function BlogCard({ i }) {
   return (
- <div id='blog' className="blogs ">
-  <div className='flex flex-col items-start w-[90%] mx-auto'>
-    <h4 className='blogs-title-mini'>
-      Blogs
-    </h4>
-        <h2 className="blogs-section-title "> Our Latest Article</h2>
-        <p className="blogs-section-abstract mt-3 ">
-Discover insights, trends, and tips from our experts. Our blog dives into Web3, design, and full-stack development, helping you stay ahead in the ever-evolving digital world.        </p>
-        <Link href={'/blogs'} className="blogs-section-link">
- View all blogs
- <FaArrowRight/>
-
-</Link>  </div>
-
-      <div className="blogs-container ">
-        {/* <div className="w-full grid grid-cols-4 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 items-center gap-5"> */}
- 
-          <EmblaCarousel  >
-            {reversedData?.map((i)=>(
-               <div key={i._id} className="blog-slide embla__slide ">
+       <div className="blog-slide embla__slide ">
                       <Image
     src={`${process.env.NEXT_PUBLIC_API_URL}${i?.image}`} 
                         className="blog-image"
-                        alt="Blog Image"
+                        alt={i.title}
                         width={500}
                         height={300}
                       />
@@ -76,19 +55,55 @@ Discover insights, trends, and tips from our experts. Our blog dives into Web3, 
                           <FaClock className="blog-time-icon" />
                           {i.time} min read - {timeAgo(i.createdAt)}
                         </span>
-                  <Link href={`/blog/${i.title}`} className="blog-readmore ">
-                          Read Article <FaArrowRight size={22} />
+                  <Link href={`/blog/${i.link}`} className="blog-readmore ">
+                          Read Article <FaArrowRight size={18} />
                         </Link>
                       </div>
-                    </div>
+                    </div> );
+}
+
+
+export default function Blogs({data}) {
+  
+
+
+
+
+      const reversedData = [...data].reverse();
+      
+    
+  return (
+      <section className='blogs' id="blogs" aria-label="Recent blog posts">          
+             <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          viewport={{ once: true }}
+className='flex flex-col items-start w-[90%] mx-auto'>
+    <h4 className='blogs-title-mini'>
+      Blogs
+    </h4>
+        <h2 className="blogs-section-title "> Our Latest Article</h2>
+        <p className="blogs-section-abstract mt-3 ">
+Discover insights, trends, and tips from our experts. Our blog dives into Web3, design, and full-stack development, helping you stay ahead in the ever-evolving digital world.        </p>
+        <Link href={'/blogs'} className="blogs-section-link">
+ View all blogs
+ <FaArrowRight/>
+
+</Link>          </motion.div>
+
+      <div className="blogs-container ">
+ 
+          <EmblaCarousel  >
+            {reversedData?.map((i)=>(
+                <BlogCard key={i._id} i={i} />
 
             ))}
     
      </EmblaCarousel>
 
-        {/* </div> */}
      
       </div>
-    </div>
+    </section>
   )
 }

@@ -1,18 +1,27 @@
-import Image from 'next/image'
+"use client"
+import Image from "next/image";
+import { motion } from "framer-motion";
+
 export default function Aboutus({data}) {
     
 
       const about = data[0];
       
-      
+        if (!about) return null;
   return (
-    <div id='about' className="aboutus ">
-        <div className="aboutus-container">
+      <section className='aboutus' id="about" aria-label="About Brno Web">  
+                     <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          viewport={{ once: true }}
+          className="aboutus-container"
+        >
             {about &&
                       <Image
             width={2000}
             height={2000}
-            alt='aboutus'
+            alt={about.title || "About Brno Web"}
             className='aboutus-image'
     src={`${process.env.NEXT_PUBLIC_API_URL}${about?.image}`} 
             />
@@ -28,8 +37,7 @@ export default function Aboutus({data}) {
                     {about?.description}
                 </p>
             </div>
-  
-        </div>
-    </div>
+  </motion.div>
+    </section>
   )
 }

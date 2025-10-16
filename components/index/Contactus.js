@@ -1,5 +1,5 @@
-'use client'; // if you're using Next.js App Router
-
+"use client"
+import { motion } from "framer-motion";
 import { useState } from 'react';
 
 export default function ContactForm() {
@@ -11,20 +11,19 @@ export default function ContactForm() {
 
   const [status, setStatus] = useState('');
   const [errors, setErrors] = useState({});
-
+  const [loading, setLoading] = useState(false);
 
   
   const validate = () => {
     const newErrors = {};
 
-      if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Invalid email format';
-    }
-         if (!formData.message.trim()) newErrors.message = 'Message is required';
-
+    if (!formData.name.trim()) newErrors.name = 'Please enter your full name.';
+        if (!formData.email.trim()) {
+      newErrors.email = 'Please enter your email.';
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address.';
+        }
+    if (!formData.message.trim()) newErrors.message = 'Message cannot be empty.';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -44,12 +43,13 @@ export default function ContactForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-        setStatus('');
-
-            if (!validate()) {
+                if (!validate()) {
       return;
     }
+
+
     setStatus('Sending...');
+        setLoading(true);
 
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contacts`, {
@@ -63,47 +63,60 @@ export default function ContactForm() {
       const data = await res.json();
 
       if (res.ok) {
-        setStatus('Your message has been received. Our support team will contact you in less than 24 hours.!');
-        setFormData({ name: '', email: '', message: '' });
+        setStatus('✅ Message sent! We’ll contact you within 24 hours.');
+                setFormData({ name: '', email: '', message: '' });
             setErrors({});
   
     } else {
-        setStatus(`Error: ${data.message || 'Something went wrong'}`);
-      }
+        setStatus(`❌ ${data.message || 'Something went wrong, try again later.'}`);      }
     } catch (error) {
       console.error('Error:', error);
-      setStatus('Error sending message');
+      setStatus('❌ Error sending message, please try again.');  
+      }
+      finally {
+      setLoading(false);
     }
   };
       
   return (
-    <div id='contact' className='contact'>
-        <div className='contact-section  '>
+      <section className='contact' id="contact" aria-label="Contact Brno Web">        <div className='contact-section  '>
+                  <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          viewport={{ once: true }}
+          className="space-y-4"
+        >
                   <h2 className='contact-section-title '>
             Contact Our Team
         </h2>
         <p className='contact-section-abstract '>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam dignissimos dolorem sapiente tempore numquam soluta nemo, commodi excepturi rem et quasi repellat aliquam provident suscipit expedita, repudiandae enim alias a.
       </p>
+      </motion.div>
  <form className='contact-card ' onSubmit={handleSubmit} >
 
       <div className=' contact-grid'>
    <div className='contact-item'>
-        <label className='contact-label'>Full Name:</label>
+        <label htmlFor="name" className='contact-label'>Full Name</label>
         <input
           type="text"
+                        id="name"
           name="name"
           className='contact-input'
           value={formData.name}
           placeholder='eg. Hugh Scott'
           onChange={handleChange}
           required
+                        aria-invalid={!!errors.name}
         />
+                    {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
       </div>
    <div className='contact-item'>
-        <label className='contact-label'>Email:</label>
+        <label htmlFor="email" className='contact-label'>Email</label>
         <input
           type="email"
+                        id="email"
           name="email"
                     className='contact-input'
 
@@ -111,17 +124,20 @@ export default function ContactForm() {
           value={formData.email}
           onChange={handleChange}
           required
+                        aria-invalid={!!errors.email}
         />
+                    {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
       </div>
       </div>
    
 
    <div className='contact-item'>
-        <label className='contact-label'>Your Message:</label>
+        <label htmlFor="message"  className='contact-label'>Your Message:</label>
         <textarea
-        
+                      rows="5"
           type="text"
           name="message"
+                        aria-invalid={!!errors.message}
     placeholder="Type your message here..."
           style={{  resize: "none",
 }}
@@ -132,28 +148,26 @@ export default function ContactForm() {
           onChange={handleChange}
           required
         />
-        
+                    {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
       </div>
       <div className='contact-error'>
       <p className='contact-text'>
 - All fields are mandatory!
       </p>
                <p className='contact-text'>
-- After a success submit our support team will contact you in less than 24 hour.
+– Our team responds within 24 hours after successful submission
       </p>
-              {errors.message && <p style={{ color: 'red' }}>{errors.message}</p>}
-              {errors.name && <p style={{ color: 'red' }}>{errors.name}</p>}
-              {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
+ 
 
       </div>
 
-      <button className=" contact-btn hover:shadow-lg" type="submit">Submit</button>
+      <button className=" contact-btn hover:shadow-lg"             disabled={loading} type="submit">            {loading ? 'Sending...' : 'Submit'}</button>
       <p className='contact-status w-full text-center font-semibold text-lg mt-3'>{status}</p>
     </form>
 
         </div>
 
-    </div>
+    </section>
    
   );
 }

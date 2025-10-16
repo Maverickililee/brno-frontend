@@ -5,14 +5,9 @@ const nextConfig = {
 
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "brnoweb.com", // Replace with your CDN or trusted domain
-      },
-      {
-        protocol: "https",
-        hostname: "brno-backend.onrender.com",
-      },
+      { protocol: "https", hostname: "brnoweb.com" },
+      { protocol: "https", hostname: "brno-backend.onrender.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
     ],
     formats: ["image/avif", "image/webp"],
   },
@@ -22,14 +17,46 @@ const nextConfig = {
   },
 
   eslint: {
-    ignoreDuringBuilds: true, // avoid build fails on minor lint issues
+    ignoreDuringBuilds: true,
   },
 
   typescript: {
-    ignoreBuildErrors: true, // prevents deployment blocking from type errors (optional)
+    ignoreBuildErrors: true,
   },
 
-  poweredByHeader: false, // hides "x-powered-by" header for security
+  poweredByHeader: false,
+
+  // 🌍 Add internationalization (if needed later)
+  i18n: {
+    locales: ["en"],
+    defaultLocale: "en",
+  },
+
+  // ⚡ Better caching for static assets
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, must-revalidate",
+          },
+        ],
+      },
+    ];
+  },
+
+  // 🔁 Redirects or rewrites if needed
+  async redirects() {
+    return [
+      {
+        source: "/home",
+        destination: "/",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
