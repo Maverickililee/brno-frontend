@@ -86,14 +86,15 @@ export default async function BlogDetailPage({ params }) {
   return (
     <main className="w-full py-20 relative  bg-stone-100 ">
       <div className="w-[65%] max-lg:w-[80%] max-md:w-[90%]  mx-auto p-6 shadow-2xl rounded-4xl overflow-hidden service-shadow border-stone-300 border">
-        <Image
-          src={`${process.env.NEXT_PUBLIC_API_URL}${blog.image}`}
-          alt={blog.title}
-          width={2000}
-          height={2000}
-          priority
+     
+                           <Image
+          src={`${process.env.NEXT_PUBLIC_API_URL}${blog?.image}`}
           className="w-full max-h-[620px]  rounded-4xl border border-stone-300"
-        />
+                             alt={blog.title}
+                             width={500}
+                             height={300}
+                           />
+
 
         <h1 className="mt-6 text-4xl mb-6 font-bold leading-normal pb-6 border-stone-300 border-b text-main">
           {blog.title}
