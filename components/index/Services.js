@@ -11,12 +11,14 @@ function ServiceCard({ service }) {
                                             className="service-card    embla__slide "
         >
                    <Image
-    src={`${process.env.NEXT_PUBLIC_API_URL}${service?.image}`} 
+    src={service?.image || "/placeholder.png"} 
                      width={500}
                      height={500}
                      alt={service.title}
                      className="service-card-img"
                              loading="lazy"
+                               unoptimized
+
                    />
                    <div className="service-card-overlay" />
                    <div className="service-card-content">
@@ -40,7 +42,7 @@ export default function Services({data}) {
             <h4 className='services-title-mini'>
       Services
       </h4>
-      <h2 className="services-section-title ">What We Offer</h2>
+      <h2 className="services-section-title ">What Can We Develope For You</h2>
 
         <p className='services-section-abstract '>
 We turn ideas into digital realities. From crafting seamless web and mobile experiences to designing intuitive interfaces and creating engaging content, our full-stack solutions empower your business to thrive online. Whether you need smart contracts for blockchain projects, high-performance marketplaces, or SEO-driven strategies, we deliver scalable, secure, and innovative solutions tailored to your goals.        </p>

@@ -22,20 +22,22 @@ We’re more than just a web agency, we’re your digital growth partner. From c
                 </motion.div>
 
            <div className="whyus-card-holder w-full">
-             {data.map(item => (
+             {data.map((item, index) => (
                <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           viewport={{ once: true }}
-   key={item._id} className="whyus-card "
-        >
+          key={index} 
+          className="whyus-card "
+         >
                  <Image
-    src={`${process.env.NEXT_PUBLIC_API_URL}${item?.image}`} 
+    src={item?.image || "/placeholder.png"} 
                    alt={item.title}
                    className="whyus-icon"
                    width={2000}
                    height={2000}
+                   unoptimized
                   
                  />
                  <h3 className="whyus-title">{item.title}</h3>

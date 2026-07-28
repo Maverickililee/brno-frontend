@@ -1,5 +1,4 @@
 "use client"
-import { motion } from "framer-motion";
 import { FaArrowTurnUp } from "react-icons/fa6";
 import Link from "next/link";
 import Image from "next/image";
@@ -25,11 +24,7 @@ export default function Hero({ data }) {
         </Link>
       <div className="hero-container ">
        
-                         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          viewport={{ once: true }}
+                         <div
           className="hero-content"
         >
           <span className="hero-slogan">{hero.slogan}</span>
@@ -38,7 +33,7 @@ export default function Hero({ data }) {
           <Link href="#contact" className="hero-btn">
               Contact Us <FaArrowTurnUp />
           </Link>
-          </motion.div>
+          </div>
    
         <Image
           src="./rock.svg"

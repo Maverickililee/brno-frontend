@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { FaLinkedinIn, FaTelegram } from "react-icons/fa6";
+import { FaInstagram, FaLinkedinIn, FaTelegram } from "react-icons/fa6";
 import { useCallback } from "react";
 
 export default function Footer() {
@@ -68,7 +68,7 @@ export default function Footer() {
               <h3 className="text-xl font-semibold text-primary-100">Follow</h3>
               <div className="mt-3 flex items-center gap-3">
                 <a
-                  href="https://t.me/TheOneAndOnlyMaverick"
+                  href="https://t.me/brnoweb"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Telegram — Brno Web"
@@ -76,9 +76,17 @@ export default function Footer() {
                 >
                   <FaTelegram />
                 </a>
-
+   <a
+                  href="https://www.instagram.com/brnoweb"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram — Brno Web"
+                  className="p-2 rounded-md bg-white/5 hover:text-primary-100 duration-200 hover:bg-white/10"
+                >
+                  <FaInstagram />
+                </a>
                 <a
-                  href="https://www.linkedin.com/in/iliya-keyhani-7b62b7362"
+                  href="https://www.linkedin.com/linkedin.com/company/brno-web"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn — Brno Web"

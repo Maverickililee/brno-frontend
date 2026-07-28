@@ -42,11 +42,12 @@ function BlogCard({ i }) {
   return (
        <div className="blog-slide embla__slide ">
                       <Image
-    src={`${process.env.NEXT_PUBLIC_API_URL}${i?.image}`} 
+    src={i?.image || "/placeholder.png"} 
                         className="blog-image"
                         alt={i.title}
                         width={500}
                         height={300}
+                        unoptimized
                       />
                       <div className="blog-card">
                         <h2 className="blog-card-title">{i.title}</h2>

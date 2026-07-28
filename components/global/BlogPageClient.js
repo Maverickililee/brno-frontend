@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Loading from "@/components/global/Loading";
+import BlogCardSkeleton from "@/components/global/BlogCardSkeleton";
 import { FaArrowRight, FaClock } from "react-icons/fa6";
 import Link from "next/link";
 import Image from "next/image";
@@ -34,11 +35,12 @@ function BlogCard({ i, index }) {
   return (
     <div key={i._id} className="blog-slide embla__slide !w-full  ">
       <Image
-        src={`${process.env.NEXT_PUBLIC_API_URL}${i?.image}`}
+        src={i?.image || "/placeholder.png"}
         className="blog-image"
         alt={i.title}
         width={500}
         height={300}
+        unoptimized
       />
       <div className="blog-card ">
         <h2 className="blog-card-title ">{i.title}</h2>
@@ -83,7 +85,34 @@ export default function Page() {
       });
   }, []);
 
-  if (loading) return <Loading />;
+  if (loading) {
+    return (
+      <main className="w-full py-10 md:py-20 min-h-screen flex justify-center">
+        <div className="w-[90%] flex flex-col lg:flex-row gap-10">
+          {/* Sidebar skeleton */}
+          <aside className="w-full lg:w-1/4 flex flex-col gap-6">
+            <div className="h-12 bg-stone-200 rounded-xl animate-pulse" />
+            <div className="flex flex-col gap-2">
+              <div className="h-6 bg-stone-200 rounded animate-pulse w-1/2 mb-3" />
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="h-10 bg-stone-200 rounded animate-pulse" />
+              ))}
+            </div>
+          </aside>
+
+          {/* Blog grid skeleton */}
+          <div className="flex-1 flex flex-col gap-6">
+            <div className="h-8 bg-stone-200 rounded animate-pulse w-1/3" />
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <BlogCardSkeleton key={i} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
   if (error) return <div className="text-center py-10 text-lg">{error}</div>;
 
   const categories = ["All", ...new Set(data.map((blog) => blog.category))];

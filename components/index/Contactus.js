@@ -91,8 +91,7 @@ export default function ContactForm() {
             Contact Our Team
         </h2>
         <p className='contact-section-abstract '>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam dignissimos dolorem sapiente tempore numquam soluta nemo, commodi excepturi rem et quasi repellat aliquam provident suscipit expedita, repudiandae enim alias a.
-      </p>
+Ready to turn your website into a powerful growth engine? We’re here to make it happen.Send us a message today and let’s start building your success.      </p>
       </motion.div>
  <form className='contact-card ' onSubmit={handleSubmit} >
 

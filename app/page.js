@@ -11,46 +11,60 @@ const Faq = dynamic(() => import("@/components/index/Faq"), { suspense: true });
 const Blogs = dynamic(() => import("@/components/index/Blogs"), { suspense: true });
 const Contactus = dynamic(() => import("@/components/index/Contactus"), { suspense: true });
 
-export const revalidate = 10;
+export const revalidate = 300;
+
+async function fetchData(endpoint) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`,
+    { next: { revalidate: 300 } } // ISR support - 5 minutes
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${endpoint}`);
+  }
+
+  return res.json();
+}
 
 export default async function Home() {
   try {
     const [services, blogs, faq, heros, whyus, aboutus] = await Promise.all([
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/services`, { cache: "no-store" }).then(res => res.json()),
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blogs`, { cache: "no-store" }).then(res => res.json()),
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/faq`, { cache: "no-store" }).then(res => res.json()),
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/heros`, { cache: "no-store" }).then(res => res.json()),
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/whyus`, { cache: "no-store" }).then(res => res.json()),
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/aboutus`, { cache: "no-store" }).then(res => res.json()),
+      fetchData("/api/services"),
+      fetchData("/api/blogs"),
+      fetchData("/api/faq"),
+      fetchData("/api/heros"),
+      fetchData("/api/whyus"),
+      fetchData("/api/aboutus"),
     ]);
-
-    const data = { services, blogs, faq, heros, whyus, aboutus };
 
     return (
       <div>
         {/* Server components render instantly */}
-        <Hero data={data.heros} />
-        <Services data={data.services} />
-        <Aboutus data={data.aboutus} />
-        <Whyus data={data.whyus} />
+        <Hero data={heros} />
+        <Services data={services} />
+        <Aboutus data={aboutus} />
+        <Whyus data={whyus} />
 
         {/* Client-side lazy-loaded sections with loading */}
         <Suspense fallback={<Loading />}>
-          <Faq data={data.faq} />
+          <Faq data={faq} />
         </Suspense>
+
         <Suspense fallback={<Loading />}>
           <Contactus />
         </Suspense>
+
         <Suspense fallback={<Loading />}>
-          <Blogs data={data.blogs} />
+          <Blogs data={blogs} />
         </Suspense>
       </div>
     );
   } catch (err) {
-    console.error(err);
+    console.error("Error fetching data:", err);
+
     return (
       <div className="min-h-[65vh] text-lg font-semibold flex items-center justify-center">
-        Failed to fetch data. Try again later!
+        Failed to fetch data. Please try again later!
       </div>
     );
   }

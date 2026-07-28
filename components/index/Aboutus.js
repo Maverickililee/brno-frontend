@@ -23,7 +23,8 @@ export default function Aboutus({data}) {
             height={2000}
             alt={about.title || "About Brno Web"}
             className='aboutus-image'
-    src={`${process.env.NEXT_PUBLIC_API_URL}${about?.image}`} 
+            unoptimized
+    src={about?.image || "/placeholder.png"} 
             />
             }
             <div className='aboutus-info'>

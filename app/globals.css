@@ -95,7 +95,7 @@ HERO - INDEX
     background-image: linear-gradient(65deg, #54ff65, #007cef);
   }
   .hero-img {
-    @apply w-[35%] max-md:hidden;
+    @apply w-[35%] h-auto max-md:hidden;
   }
   .hero-img-2 {
     @apply absolute;
