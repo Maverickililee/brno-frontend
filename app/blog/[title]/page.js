@@ -110,7 +110,7 @@ export default async function BlogDetailPage({ params }) {
       <div className="w-[65%] max-lg:w-[80%] max-md:w-[90%]  mx-auto p-6 shadow-2xl rounded-4xl overflow-hidden service-shadow border-stone-300 border">
      
                            <Image
-          src={`${process.env.NEXT_PUBLIC_API_URL}${blog?.image}`}
+          src={blog?.image?.startsWith('http') ? blog.image : `${process.env.NEXT_PUBLIC_API_URL}${blog?.image}`}
           className="w-full max-h-[620px]  rounded-4xl border border-stone-300"
                              alt={blog.title}
                              width={500}
@@ -142,7 +142,7 @@ export default async function BlogDetailPage({ params }) {
             "@type": "BlogPosting",
             headline: blog.title,
             description: blog.description,
-            image: `${process.env.NEXT_PUBLIC_API_URL}${blog.image}`,
+            image: blog.image?.startsWith('http') ? blog.image : `${process.env.NEXT_PUBLIC_API_URL}${blog.image}`,
             author: {
               "@type": "Organization",
               name: "Brno Web",
