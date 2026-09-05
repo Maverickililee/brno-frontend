@@ -7,58 +7,40 @@ import { notFound } from "next/navigation";
 
 export const dynamic = 'force-dynamic';
 
-async function getBlogByTitle(title) {
+async function getBlogById(id) {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    console.log('API URL:', apiUrl);
-    console.log('Title parameter:', title);
     
     if (!apiUrl) {
-      console.error('API URL is missing');
       return null;
     }
     
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
     
-    const res = await fetch(`${apiUrl}/api/blogs`, {
-      next: { revalidate: 300 }, // ISR - 5 minutes
+    const res = await fetch(`${apiUrl}/api/blogs/${id}`, {
       signal: controller.signal,
     });
     
     clearTimeout(timeoutId);
     
-    console.log('Response status:', res.status);
-    
     if (!res.ok) {
-      console.error('Response not OK:', res.status);
       return null;
     }
     
-    const blogs = await res.json();
-    console.log('Blogs count:', blogs.length);
-    console.log('Blog titles:', blogs.map(b => b.title));
-    
-    const decodedTitle = decodeURIComponent(title);
-    console.log('Decoded title:', decodedTitle);
-    
-    const foundBlog = blogs.find((blog) => blog.title === decodedTitle);
-    console.log('Found blog:', foundBlog ? foundBlog.title : 'NOT FOUND');
-    
-    return foundBlog || null;
+    return await res.json();
   } catch (error) {
-    console.error('Error fetching blog:', error);
     return null;
   }
 }
 
 export async function generateMetadata({ params }) {
-  const blog = await getBlogByTitle(params.title);
+  const blog = await getBlogById(params.title);
 
   if (!blog) {
     return {
       title: "Blog Not Found | Brno Web",
-      description: "The blog you’re looking for could not be found.",
+      description: "The blog you're looking for could not be found.",
       robots: "noindex, nofollow",
     };
   }
@@ -105,7 +87,7 @@ export async function generateMetadata({ params }) {
 
 export default async function BlogDetailPage({ params }) {
   const { title } = params;
-  const blog = await getBlogByTitle(title);
+  const blog = await getBlogById(title);
 
   if (!blog) {
     notFound();
