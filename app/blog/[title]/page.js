@@ -28,26 +28,6 @@ async function getBlogByTitle(link) {
   }
 }
 
-export async function generateStaticParams() {
-  try {
-    if (!process.env.NEXT_PUBLIC_API_URL) {
-      return [];
-    }
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blogs`);
-    if (!res.ok) {
-      return [];
-    }
-    const blogs = await res.json();
-
-    return blogs.map((blog) => ({
-      title: encodeURIComponent(blog.link),
-    }));
-  } catch (error) {
-    console.error('Error generating static params for blogs:', error);
-    return [];
-  }
-}
-
 export async function generateMetadata({ params }) {
   const blog = await getBlogByTitle(params.title);
 
