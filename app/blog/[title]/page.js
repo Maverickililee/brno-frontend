@@ -18,9 +18,15 @@ async function getBlogByTitle(link) {
       return null;
     }
     
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    
     const res = await fetch(`${apiUrl}/api/blogs`, {
       next: { revalidate: 300 }, // ISR - 5 minutes
+      signal: controller.signal,
     });
+    
+    clearTimeout(timeoutId);
     
     console.log('Fetch response status:', res.status);
     
