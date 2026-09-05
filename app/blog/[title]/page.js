@@ -10,8 +10,11 @@ export const dynamic = 'force-dynamic';
 async function getBlogByTitle(title) {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    console.log('API URL:', apiUrl);
+    console.log('Title parameter:', title);
     
     if (!apiUrl) {
+      console.error('API URL is missing');
       return null;
     }
     
@@ -25,14 +28,26 @@ async function getBlogByTitle(title) {
     
     clearTimeout(timeoutId);
     
+    console.log('Response status:', res.status);
+    
     if (!res.ok) {
+      console.error('Response not OK:', res.status);
       return null;
     }
     
     const blogs = await res.json();
+    console.log('Blogs count:', blogs.length);
+    console.log('Blog titles:', blogs.map(b => b.title));
+    
     const decodedTitle = decodeURIComponent(title);
-    return blogs.find((blog) => blog.title === decodedTitle) || null;
+    console.log('Decoded title:', decodedTitle);
+    
+    const foundBlog = blogs.find((blog) => blog.title === decodedTitle);
+    console.log('Found blog:', foundBlog ? foundBlog.title : 'NOT FOUND');
+    
+    return foundBlog || null;
   } catch (error) {
+    console.error('Error fetching blog:', error);
     return null;
   }
 }
