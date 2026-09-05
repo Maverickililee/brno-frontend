@@ -5,6 +5,8 @@ import { FaArrowLeft } from "react-icons/fa6";
 
 import { notFound } from "next/navigation";
 
+export const dynamic = 'force-dynamic';
+
 async function getBlogByTitle(link) {
   try {
     if (!process.env.NEXT_PUBLIC_API_URL) {
