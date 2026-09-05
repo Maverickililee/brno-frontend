@@ -11,7 +11,7 @@ const Faq = dynamic(() => import("@/components/index/Faq"), { suspense: true });
 const Blogs = dynamic(() => import("@/components/index/Blogs"), { suspense: true });
 const Contactus = dynamic(() => import("@/components/index/Contactus"), { suspense: true });
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 async function fetchData(endpoint) {
   const res = await fetch(
