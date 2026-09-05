@@ -1,4 +1,4 @@
-import dynamic from "next/dynamic";
+import nextDynamic from "next/dynamic";
 import Hero from "@/components/index/Hero";
 import Services from "@/components/index/Services";
 import Aboutus from "@/components/index/Aboutus";
@@ -7,9 +7,9 @@ import { Suspense } from "react";
 import Loading from "@/components/global/Loading";
 
 // Lazy load heavy sections with suspense
-const Faq = dynamic(() => import("@/components/index/Faq"), { suspense: true });
-const Blogs = dynamic(() => import("@/components/index/Blogs"), { suspense: true });
-const Contactus = dynamic(() => import("@/components/index/Contactus"), { suspense: true });
+const Faq = nextDynamic(() => import("@/components/index/Faq"), { suspense: true });
+const Blogs = nextDynamic(() => import("@/components/index/Blogs"), { suspense: true });
+const Contactus = nextDynamic(() => import("@/components/index/Contactus"), { suspense: true });
 
 export const dynamic = 'force-dynamic';
 
