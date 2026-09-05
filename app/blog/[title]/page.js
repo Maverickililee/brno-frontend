@@ -9,19 +9,37 @@ export const dynamic = 'force-dynamic';
 
 async function getBlogByTitle(link) {
   try {
-    if (!process.env.NEXT_PUBLIC_API_URL) {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    console.log('API URL:', apiUrl);
+    console.log('Looking for blog with link:', link);
+    
+    if (!apiUrl) {
+      console.error('NEXT_PUBLIC_API_URL is not set');
       return null;
     }
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blogs`, {
+    
+    const res = await fetch(`${apiUrl}/api/blogs`, {
       next: { revalidate: 300 }, // ISR - 5 minutes
     });
+    
+    console.log('Fetch response status:', res.status);
+    
     if (!res.ok) {
+      console.error('Failed to fetch blogs, status:', res.status);
       return null;
     }
+    
     const blogs = await res.json();
+    console.log('Fetched blogs count:', blogs.length);
+    console.log('Blog links:', blogs.map(b => b.link));
 
     const decodedTitle = decodeURIComponent(link);
-    return blogs.find((blog) => blog.link === decodedTitle) || null;
+    console.log('Decoded title:', decodedTitle);
+    
+    const foundBlog = blogs.find((blog) => blog.link === decodedTitle);
+    console.log('Found blog:', foundBlog ? foundBlog.title : 'Not found');
+    
+    return foundBlog || null;
   } catch (error) {
     console.error('Error fetching blog:', error);
     return null;
