@@ -49,7 +49,7 @@ function BlogCard({ i, index }) {
           <FaClock className="blog-time-icon" /> {i.time} min read -{" "}
           {timeAgo(i.createdAt)}
         </span>
-        <Link href={`/blog/${i.link}`} className="blog-readmore ">
+        <Link href={`/blog/${encodeURIComponent(i.title)}`} className="blog-readmore ">
           Read Article <FaArrowRight size={16} />
         </Link>
       </div>

@@ -7,14 +7,11 @@ import { notFound } from "next/navigation";
 
 export const dynamic = 'force-dynamic';
 
-async function getBlogByTitle(link) {
+async function getBlogByTitle(title) {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    console.log('API URL:', apiUrl);
-    console.log('Link parameter:', link);
     
     if (!apiUrl) {
-      console.error('API URL is missing');
       return null;
     }
     
@@ -28,26 +25,14 @@ async function getBlogByTitle(link) {
     
     clearTimeout(timeoutId);
     
-    console.log('Response status:', res.status);
-    
     if (!res.ok) {
-      console.error('Response not OK');
       return null;
     }
     
     const blogs = await res.json();
-    console.log('Blogs count:', blogs.length);
-    console.log('Blog links:', blogs.map(b => b.link));
-    
-    const decodedTitle = decodeURIComponent(link);
-    console.log('Decoded title:', decodedTitle);
-    
-    const foundBlog = blogs.find((blog) => blog.link === decodedTitle);
-    console.log('Found blog:', foundBlog ? foundBlog.title : 'NOT FOUND');
-    
-    return foundBlog || null;
+    const decodedTitle = decodeURIComponent(title);
+    return blogs.find((blog) => blog.title === decodedTitle) || null;
   } catch (error) {
-    console.error('Error:', error);
     return null;
   }
 }
